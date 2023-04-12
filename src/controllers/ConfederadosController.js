@@ -1,10 +1,10 @@
-const Servico = require('../models/Servicos');
+const Confederados = require('../models/Confederados');
 
-const ServicoController = {
+const ConfederadosController = {
   async listar(req, res) {
     try {
-      const servicos = await Servico.findAll();
-      res.status(200).json(servicos);
+      const confederados = await Confederados.findAll();
+      res.status(200).json(confederados);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Erro ao buscar os serviços" });
@@ -13,11 +13,11 @@ const ServicoController = {
 
   async show(req, res) {
     try {
-      const servico = await Servico.findOne({ where: { id: req.params.id } });
-      if (!servico) {
+      const confederado = await Confederados.findOne({ where: { id: req.params.id } });
+      if (!confederado) {
         return res.status(404).json({ message: "Serviço não encontrado" });
       }
-      res.status(200).json(servico);
+      res.status(200).json(confederado);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Erro ao buscar o serviço" });
@@ -26,18 +26,18 @@ const ServicoController = {
 
   async criar(req, res) {
     try {
-      const { nome, descricao, ativo, link } = JSON.parse(req.body.servico);
+      const { nome,  ativo, link } = JSON.parse(req.body.confederado);
       if (req.files && Object.keys(req.files).length > 0) {
-        var url = req.files.servicoFile[0].filename;
+        var url = req.files.confederadoFile[0].filename;
       }
-      const novoServico = await Servico.create({
+      const novoConfederados = await Confederados.create({
         nome,
-        descricao,
+        
         url,
         ativo,
         link,
       });
-      res.status(201).json(novoServico);
+      res.status(201).json(novoConfederados);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Erro ao criar o serviço" });
@@ -46,22 +46,22 @@ const ServicoController = {
 
   async update(req, res) {
     try {
-      const servico = await Servico.findOne({ where: { id: req.params.id } });
-      if (!servico) {
+      const confederado = await Confederados.findOne({ where: { id: req.params.id } });
+      if (!confederado) {
         return res.status(404).json({ message: "Serviço não encontrado" });
       }
-      const { nome, descricao, ativo, link } = JSON.parse(req.body.servico);
+      const { nome,  ativo, link } = JSON.parse(req.body.confederado);
       if (req.files && Object.keys(req.files).length > 0) {
-        var url = req.files.servicoFile[0].filename;
+        var url = req.files.confederadoFile[0].filename;
       }
-      const servicoAtualizado = await servico.update({
+      const confederadoAtualizado = await confederado.update({
         nome,
-        descricao,
+        
         url,
         ativo,
         link,
       });
-      res.status(200).json(servicoAtualizado);
+      res.status(200).json(confederadoAtualizado);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Erro ao atualizar o serviço" });
@@ -70,11 +70,11 @@ const ServicoController = {
 
   async delete(req, res) {
     try {
-      const servico = await Servico.findOne({ where: { id: req.params.id } });
-      if (!servico) {
+      const confederado = await Confederados.findOne({ where: { id: req.params.id } });
+      if (!confederado) {
         return res.status(404).json({ message: "Serviço não encontrado" });
       }
-      await servico.destroy();
+      await confederado.destroy();
       res.status(204).end();
     } catch (error) {
       console.log(error);
@@ -83,5 +83,5 @@ const ServicoController = {
   },
 };
 
-module.exports = ServicoController;
+module.exports = ConfederadosController;
 

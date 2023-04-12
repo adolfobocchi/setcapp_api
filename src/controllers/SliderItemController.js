@@ -29,16 +29,16 @@ const SliderItemController = {
     try {
 
       const { order, descricao, link, ativo } = JSON.parse(req.body.slider);
-      if (req.files) {
+      if (req.files && Object.keys(req.files).length > 0) {
         var url = req.files.sliderFile[0].filename;
       }
-      console.log(url);
       const sliderItem = await SliderItem.create({
         url,
         order,
         descricao,
         link,
-        ativo}
+        ativo
+      }
       );
       return res.status(201).json(sliderItem);
     } catch (err) {
@@ -51,23 +51,27 @@ const SliderItemController = {
     try {
       const { id } = req.params;
       const { order, descricao, link, ativo } = JSON.parse(req.body.slider);
-      
+
       const slider = await SliderItem.findByPk(id);
+
       if (!slider) {
         return res.status(404).json({ error: 'SliderItem não encontrado' });
       }
 
-
-      if (req.files) {
+      if (req.files && Object.keys(req.files).length > 0) {
         var url = req.files.sliderFile[0].filename;
       }
+
       await slider.update({
         url,
         order,
         descricao,
         link,
-        ativo}
+        ativo
+      }
       );
+
+      console.log(slider);
 
       return res.json(slider);
     } catch (err) {

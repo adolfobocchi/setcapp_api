@@ -1,10 +1,10 @@
-const Servico = require('../models/Servicos');
+const Acordos = require('../models/Acordos');
 
-const ServicoController = {
+const AcordosController = {
   async listar(req, res) {
     try {
-      const servicos = await Servico.findAll();
-      res.status(200).json(servicos);
+      const acordos = await Acordos.findAll();
+      res.status(200).json(acordos);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Erro ao buscar os serviços" });
@@ -13,11 +13,11 @@ const ServicoController = {
 
   async show(req, res) {
     try {
-      const servico = await Servico.findOne({ where: { id: req.params.id } });
-      if (!servico) {
+      const acordo = await Acordos.findOne({ where: { id: req.params.id } });
+      if (!acordo) {
         return res.status(404).json({ message: "Serviço não encontrado" });
       }
-      res.status(200).json(servico);
+      res.status(200).json(acordo);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Erro ao buscar o serviço" });
@@ -26,18 +26,15 @@ const ServicoController = {
 
   async criar(req, res) {
     try {
-      const { nome, descricao, ativo, link } = JSON.parse(req.body.servico);
+      const { nome } = JSON.parse(req.body.acordo);
       if (req.files && Object.keys(req.files).length > 0) {
-        var url = req.files.servicoFile[0].filename;
+        var url = req.files.acordoFile[0].filename;
       }
-      const novoServico = await Servico.create({
+      const novoAcordos = await Acordos.create({
         nome,
-        descricao,
-        url,
-        ativo,
-        link,
+        url
       });
-      res.status(201).json(novoServico);
+      res.status(201).json(novoAcordos);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Erro ao criar o serviço" });
@@ -46,22 +43,19 @@ const ServicoController = {
 
   async update(req, res) {
     try {
-      const servico = await Servico.findOne({ where: { id: req.params.id } });
-      if (!servico) {
+      const acordo = await Acordos.findOne({ where: { id: req.params.id } });
+      if (!acordo) {
         return res.status(404).json({ message: "Serviço não encontrado" });
       }
-      const { nome, descricao, ativo, link } = JSON.parse(req.body.servico);
+      const { nome } = JSON.parse(req.body.acordo);
       if (req.files && Object.keys(req.files).length > 0) {
-        var url = req.files.servicoFile[0].filename;
+        var url = req.files.acordoFile[0].filename;
       }
-      const servicoAtualizado = await servico.update({
+      const acordoAtualizado = await acordo.update({
         nome,
-        descricao,
-        url,
-        ativo,
-        link,
+        url
       });
-      res.status(200).json(servicoAtualizado);
+      res.status(200).json(acordoAtualizado);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Erro ao atualizar o serviço" });
@@ -70,11 +64,11 @@ const ServicoController = {
 
   async delete(req, res) {
     try {
-      const servico = await Servico.findOne({ where: { id: req.params.id } });
-      if (!servico) {
+      const acordo = await Acordos.findOne({ where: { id: req.params.id } });
+      if (!acordo) {
         return res.status(404).json({ message: "Serviço não encontrado" });
       }
-      await servico.destroy();
+      await acordo.destroy();
       res.status(204).end();
     } catch (error) {
       console.log(error);
@@ -83,5 +77,5 @@ const ServicoController = {
   },
 };
 
-module.exports = ServicoController;
+module.exports = AcordosController;
 

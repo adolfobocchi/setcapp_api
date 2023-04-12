@@ -4,7 +4,6 @@ const EmpresaImages = require('../models/EmpresaImages');
 
 async function adicionarImagensAoEmpresa(empresaId, imagens) {
     try {
-        console.log(imagens)
         const imagensDoEmpresa = await Promise.all(
             imagens.map(async (imagem) => {
                 const imagemDoEmpresa = await EmpresaImages.create({ url: imagem.filename, empresaId: empresaId });
@@ -29,8 +28,8 @@ const EmpresaController = {
                 estado,
                 cep,
                 telefone, whatsapp, instagram, facebook, linkedin, email, latitude, longitude, institucional, diretoria } = JSON.parse(req.body.empresa);
-
-            if (req.files) {
+           
+                if (req.files && Object.keys(req.files).length > 0) {
                 var logo = req.files.logoFile[0].filename;
                 var territorio = req.files.territorioFile[0].filename;
             }
@@ -108,7 +107,7 @@ const EmpresaController = {
             if (!empresa) {
                 return res.status(404).json({ error: 'Empresa não encontrada' });
             }
-            if (req.files && req.files.lenght) {
+            if (req.files && Object.keys(req.files).length > 0) {
                 var logo = req.files.logoFile[0].filename;
                 var territorio = req.files.territorioFile[0].filename;
             }

@@ -13,7 +13,8 @@ async listar (req, res) {
 // Criar uma nova noticia
 async criar(req, res) {
   try {
-    const novaNoticia = await Noticia.create(req.body);
+    const {titulo, conteudo, data_hora, ativo } = req.body;
+    const novaNoticia = await Noticia.create({titulo, conteudo, data_hora, ativo });
     res.status(201).json(novaNoticia);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -39,7 +40,10 @@ async update(req, res) {
   try {
     const noticia = await Noticia.findByPk(req.params.id);
     if (noticia) {
-      await noticia.update(req.body);
+      const {titulo, conteudo, data_hora, ativo } = req.body;
+      await noticia.update(
+        {titulo, conteudo, data_hora, ativo }
+      );
       res.status(200).json(noticia);
     } else {
       res.status(404).json({ message: 'Notícia não encontrada' });

@@ -1,33 +1,33 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/connection');
 
-const Servico = sequelize.define('servicos', {
+const Contato = sequelize.define('contatos', {
   nome: {
     type: DataTypes.STRING,
     allowNull: true
   },
-  descricao: {
+  email: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  assunto: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  telefone: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  mensagem: {
     type: DataTypes.TEXT,
     allowNull: true
   },
-  url: {
-    type: DataTypes.STRING,
-    allowNull: true
-  },
-  ativo: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true
-  },
-  link: {
-    type: DataTypes.STRING,
-    allowNull: true
-  }
 });
 
 sequelize.sync().then(() => {
-    console.log('Tabela servicos sincronizada!');
+    console.log('Tabela contatos sincronizada!');
   }).catch((error) => {
-    console.error('Erro ao sincronizar a tabela servicos:', error);
+    console.error('Erro ao sincronizar a tabela contatos:', error);
   });
 
-module.exports = Servico;
+module.exports = Contato;
