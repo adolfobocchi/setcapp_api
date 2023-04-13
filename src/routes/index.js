@@ -29,7 +29,8 @@ const upload = multer({ storage });
 
 router.post('/login', AuthController.login);
 router.post('/signup', AuthController.private, AuthController.signup);
-router.post('/logout', AuthController.private, AuthController.logout);
+router.post('/logout', AuthController.logout);
+router.post('/token', AuthController.isTokenValid);
 
 router.get('/empresa', EmpresaController.listar);
 router.post('/empresa', AuthController.private, upload.fields([{ name: 'logoFile' }, { name: 'territorioFile' }, { name: 'imagens', maxCount: 20 }]), EmpresaController.criar);

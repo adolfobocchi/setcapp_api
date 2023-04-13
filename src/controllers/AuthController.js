@@ -17,7 +17,7 @@ exports.login = async (req, res) => {
         if (!match) {
             return res.status(401).json({ message: 'Senha incorreta.' });
         }
-        const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '2h' });
+        const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '3h' });
         return res.json({ token });
     } catch (err) {
         console.error(err);
@@ -39,7 +39,7 @@ exports.signup = async (req, res) => {
             email,
             password: hashedPassword,
         });
-        
+
         return res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
     } catch (error) {
         console.error(error);
@@ -64,16 +64,34 @@ exports.logout = async (req, res) => {
 
 exports.private = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
-  
+
     if (!token) {
-      return res.status(401).json({ mensagem: 'Token JWT ausente.' });
+        return res.status(401).json({ mensagem: 'Token JWT ausente.' });
     }
-  
+
     try {
-      const decoded = jwt.verify(token, secretKey);
-      req.user = decoded;
-      next();
+        const decoded = jwt.verify(token, secretKey);
+        req.user = decoded;
+        next();
     } catch (err) {
-      return res.status(401).json({ mensagem: 'Token JWT inválido.' });
+        return res.status(401).json({ mensagem: 'Token JWT inválido.' });
     }
-  };
+};
+
+exports.isTokenValid = async (req, res) => {
+    const token = req.params.token;
+    
+    try {
+        const decodedToken = jwt.decode(token);
+
+        const expirationDate = new Date(decodedToken * 1000);
+        const currentDate = new Date();
+        if (expirationDate < currentDate) {
+            return res.status(200).json(true);
+        }
+        return res.status(200).json(false);
+    } catch (error) {
+        return res.status(500).json({mensagem: error});
+    }
+    
+}
