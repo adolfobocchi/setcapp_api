@@ -3,7 +3,9 @@ const SliderItem = require('../models/SliderItem');
 const SliderItemController = {
   async listar(req, res) {
     try {
-      const sliderItems = await SliderItem.findAll();
+      const sliderItems = await SliderItem.findAll({
+        order: [['order', 'ASC']]
+      });
       return res.json(sliderItems);
     } catch (err) {
       return res.status(500).json({ error: 'Erro ao buscar sliderItems' });
@@ -50,7 +52,6 @@ const SliderItemController = {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { order, descricao, link, ativo } = JSON.parse(req.body.slider);
 
       const slider = await SliderItem.findByPk(id);
 
@@ -58,10 +59,10 @@ const SliderItemController = {
         return res.status(404).json({ error: 'SliderItem não encontrado' });
       }
 
+      const { order, descricao, link, ativo } = JSON.parse(req.body.slider);
       if (req.files && Object.keys(req.files).length > 0) {
         var url = req.files.sliderFile[0].filename;
       }
-
       await slider.update({
         url,
         order,
@@ -70,8 +71,6 @@ const SliderItemController = {
         ativo
       }
       );
-
-      console.log(slider);
 
       return res.json(slider);
     } catch (err) {

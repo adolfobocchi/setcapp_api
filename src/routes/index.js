@@ -47,7 +47,7 @@ router.delete('/noticia/:id', AuthController.private, NoticiaController.delete);
 router.get('/slider', SliderItemController.listar);
 router.get('/slider/:id', SliderItemController.show);
 router.post('/slider', AuthController.private, upload.fields([{name: 'sliderFile'}]), SliderItemController.criar);
-router.put('/slider/:id', AuthController.private, upload.array('files'), SliderItemController.update);
+router.put('/slider/:id', AuthController.private, upload.fields([{name: 'sliderFile'}]), SliderItemController.update);
 router.delete('/slider/:id', AuthController.private, SliderItemController.delete);
 
 router.get('/servico', ServicoController.listar);
