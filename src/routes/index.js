@@ -27,6 +27,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+router.get('/ping', (req,res) => res.send('pong'));
+
 router.post('/login', AuthController.login);
 router.post('/signup', AuthController.private, AuthController.signup);
 router.post('/logout', AuthController.logout);

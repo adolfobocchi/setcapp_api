@@ -3,7 +3,12 @@ const Noticia = require('../models/Noticias');
 const NoticiaController = {
 async listar (req, res) {
   try {
-    const noticias = await Noticia.findAll({ where: { ativo: true } });
+    const noticias = await Noticia.findAll({ 
+      where: { ativo: true },
+      order: [['data_hora', 'desc']],
+      limit: 10
+      
+    });
     res.status(200).json(noticias);
   } catch (error) {
     res.status(500).json({ message: error.message });
