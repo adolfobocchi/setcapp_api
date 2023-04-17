@@ -34,8 +34,8 @@ server.use((req,res) => {
 });
 
 
-server.listen(process.env.API_PORT, () => {
-  console.log(`Server listening at http://localhost:${process.env.API_PORT}`);
+server.listen(process.env.PORT, () => {
+  console.log(`Server listening at http://localhost:${process.env.PORT}`);
 });
 
 

@@ -28,8 +28,8 @@ const EmpresaController = {
                 estado,
                 cep,
                 telefone, whatsapp, instagram, facebook, linkedin, email, latitude, longitude, institucional, diretoria } = JSON.parse(req.body.empresa);
-           
-                if (req.files && Object.keys(req.files).length > 0) {
+
+            if (req.files && Object.keys(req.files).length > 0) {
                 var logo = req.files.logoFile[0].filename;
                 var territorio = req.files.territorioFile[0].filename;
             }
@@ -66,10 +66,10 @@ const EmpresaController = {
         try {
             const empresas = await Empresa.findAll({
                 include: [{
-                  model: EmpresaImages,
-                  as: 'imagens'
+                    model: EmpresaImages,
+                    as: 'imagens'
                 }]
-              });
+            });
             return res.json(empresas);
         } catch (err) {
             console.error(err);
