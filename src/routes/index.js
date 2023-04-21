@@ -13,6 +13,7 @@ const EventoController = require('../controllers/EventoController');
 const ConfederadoController = require('../controllers/ConfederadosController');
 const AcordoController = require('../controllers/AcordoController');
 const ContatoController = require('../controllers/ContatoController');
+const AnttController = require('../controllers/AnttController');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -94,5 +95,11 @@ router.get('/evento/:id', EventoController.show);
 router.post('/evento', AuthController.private, upload.fields([{ name: 'imagens', maxCount: 10 }]), EventoController.criar);
 router.put('/evento/:id', AuthController.private, upload.array('files'), EventoController.update);
 router.delete('/evento/:id', AuthController.private, upload.array('files'), EventoController.delete);
+
+router.get('/antt', AnttController.listar);
+router.get('/antt/:id', AnttController.show);
+router.post('/antt', AuthController.private, upload.fields([{name: 'anttFile'}]), AnttController.criar);
+router.put('/antt/:id', AuthController.private, upload.fields([{name: 'anttFile'}]), AnttController.update);
+router.delete('/antt/:id', AuthController.private, AnttController.delete);
 
 module.exports = router;
