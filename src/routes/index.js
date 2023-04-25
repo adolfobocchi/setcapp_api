@@ -84,11 +84,11 @@ router.post('/legislacao', AuthController.private, LegislacaoController.criar);
 router.put('/legislacao/:id', AuthController.private, LegislacaoController.update);
 router.delete('/legislacao/:id', AuthController.private, LegislacaoController.delete);
 
-router.get('/associados', AssociadoController.listar);
-router.get('/associados/:id', AssociadoController.show);
-router.post('/associados', AuthController.private, AssociadoController.criar);
-router.put('/associados/:id', AuthController.private, AssociadoController.update);
-router.delete('/associados/:id', AuthController.private, AssociadoController.delete);
+router.get('/associado', AuthController.private, AssociadoController.listar);
+router.get('/associado/:id', AuthController.private, AssociadoController.show);
+router.post('/associado', AssociadoController.criar);
+router.put('/associado/:id', AuthController.private, AssociadoController.update);
+router.delete('/associado/:id', AuthController.private, AssociadoController.delete);
 
 router.get('/evento', EventoController.listar);
 router.get('/evento/:id', EventoController.show);
