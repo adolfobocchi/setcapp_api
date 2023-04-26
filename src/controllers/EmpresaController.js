@@ -108,8 +108,8 @@ const EmpresaController = {
                 return res.status(404).json({ error: 'Empresa não encontrada' });
             }
             if (req.files && Object.keys(req.files).length > 0) {
-                var logo = req.files.logoFile[0].filename;
-                var territorio = req.files.territorioFile[0].filename;
+                var logo = req.files.logoFile?.[0].filename;
+                var territorio = req.files.territorioFile?.[0].filename;
             }
             await empresa.update({
                 nome,
