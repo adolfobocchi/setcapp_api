@@ -22,7 +22,7 @@ server.use(cors({
   allowedHeaders: ['Content-Type','Authorization'],
 }));
 
-server.use(express.static('public'));
+server.use(express.static(`${process.env.PATH_WWW}/public`));
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());

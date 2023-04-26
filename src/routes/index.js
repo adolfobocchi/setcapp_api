@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
@@ -17,7 +18,7 @@ const AnttController = require('../controllers/AnttController');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/images/')
+        cb(null, `${process.env.PATH_WWW}/public/images/`)
     },
     filename: function (req, file, cb) {
         const extensaoArquivo = file.originalname.split('.')[file.originalname.split('.').length-1];
