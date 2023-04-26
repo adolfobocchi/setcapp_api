@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../database/connection');
 const EventoImagens = require('./EventosImages');
 
-const Evento = sequelize.define('Evento', {
+const Evento = sequelize.define('evento', {
   titulo: {
     type: DataTypes.STRING,
     allowNull: false
