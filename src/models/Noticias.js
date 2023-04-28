@@ -7,7 +7,7 @@ const Noticias = sequelize.define('noticias', {
     allowNull: false
   },
   conteudo: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('long'),
     allowNull: false
   },
   data_hora: {

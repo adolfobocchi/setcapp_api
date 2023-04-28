@@ -19,7 +19,7 @@ const Contato = sequelize.define('contatos', {
     allowNull: true
   },
   mensagem: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('long'),
     allowNull: true
   },
 });

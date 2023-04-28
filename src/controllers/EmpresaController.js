@@ -1,3 +1,5 @@
+require('dotenv').config();
+const fs = require('fs');
 const Empresa = require('../models/Empresa');
 
 const EmpresaImages = require('../models/EmpresaImages');
@@ -17,6 +19,20 @@ async function adicionarImagensAoEmpresa(empresaId, imagens) {
     }
 }
 
+function deleteImage(imageName) {
+    console.log(imageName);
+    let imagePath = `${process.env.PATH_WWW}/public/images/${imageName}`;
+    console.log(imagePath);
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error(err);
+        return false;
+      }
+      console.log('Arquivo excluído com sucesso');
+      return true;
+    });
+  }
+
 const EmpresaController = {
     async criar(req, res) {
         try {
@@ -27,11 +43,10 @@ const EmpresaController = {
                 cidade,
                 estado,
                 cep,
-                telefone, whatsapp, instagram, facebook, linkedin, email, latitude, longitude, institucional, diretoria } = JSON.parse(req.body.empresa);
+                telefone, whatsapp, instagram, facebook, linkedin, email, latitude, longitude, institucional, diretoria, territorio } = JSON.parse(req.body.empresa);
 
             if (req.files && Object.keys(req.files).length > 0) {
                 var logo = req.files.logoFile[0].filename;
-                var territorio = req.files.territorioFile[0].filename;
             }
             const empresa = await Empresa.create({
                 nome,
@@ -101,7 +116,7 @@ const EmpresaController = {
                 cidade,
                 estado,
                 cep,
-                telefone, whatsapp, instagram, facebook, linkedin, email, latitude, longitude, institucional, diretoria } = JSON.parse(req.body.empresa);
+                telefone, whatsapp, instagram, facebook, linkedin, email, latitude, longitude, institucional, diretoria, territorio } = JSON.parse(req.body.empresa);
 
             const empresa = await Empresa.findByPk(id);
             if (!empresa) {
@@ -109,7 +124,6 @@ const EmpresaController = {
             }
             if (req.files && Object.keys(req.files).length > 0) {
                 var logo = req.files.logoFile?.[0].filename;
-                var territorio = req.files.territorioFile?.[0].filename;
             }
             await empresa.update({
                 nome,
@@ -149,6 +163,25 @@ const EmpresaController = {
             }
             await empresa.destroy();
             return res.status(204).send();
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Erro ao deletar empresa' });
+        }
+    },
+
+    async deleteImagensEmpresa(req, res) {
+        try {
+            const { id } = req.params;
+            console.log(id);
+            const empresaImages = await EmpresaImages.findByPk(id);
+            if (!empresaImages) {
+                return res.status(404).json({ error: 'Empresa não encontrada' });
+            }
+            
+            deleteImage(empresaImages.url)
+                
+                await empresaImages.destroy();
+                return res.status(204).send();
         } catch (err) {
             console.error(err);
             return res.status(500).json({ error: 'Erro ao deletar empresa' });

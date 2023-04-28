@@ -3,7 +3,7 @@ const sequelize = require('../database/connection');
 
 const Legislacao = sequelize.define('legislacao', {
   conteudo: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('long'),
     allowNull: false
   }
 });

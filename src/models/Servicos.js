@@ -7,7 +7,7 @@ const Servico = sequelize.define('servicos', {
     allowNull: true
   },
   descricao: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('long'),
     allowNull: true
   },
   url: {

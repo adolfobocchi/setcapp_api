@@ -8,7 +8,7 @@ const Evento = sequelize.define('evento', {
     allowNull: false
   },
   descricao: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('long'),
     allowNull: false
   },
   data: {

@@ -69,15 +69,15 @@ const Empresa = sequelize.define('empresa', {
     allowNull: true
   },
   institucional: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('long'),
     allowNull: true
   },
   diretoria: {
-    type: DataTypes.TEXT,
+    type: DataTypes.TEXT('long'),
     allowNull: true
   },
   territorio:{
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT('long'),
     allowNull: true
   },
 });

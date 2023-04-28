@@ -37,10 +37,11 @@ router.post('/logout', AuthController.logout);
 router.post('/token', AuthController.isTokenValid);
 
 router.get('/empresa', EmpresaController.listar);
-router.post('/empresa', AuthController.private, upload.fields([{ name: 'logoFile' }, { name: 'territorioFile' }, { name: 'imagens', maxCount: 20 }]), EmpresaController.criar);
+router.post('/empresa', AuthController.private, upload.fields([{ name: 'logoFile' }, { name: 'imagens', maxCount: 20 }]), EmpresaController.criar);
 router.get('/empresa/:id', EmpresaController.show);
-router.put('/empresa/:id', AuthController.private, upload.fields([{ name: 'logoFile' }, { name: 'territorioFile' }, { name: 'imagens', maxCount: 20 }]), EmpresaController.update);
+router.put('/empresa/:id', AuthController.private, upload.fields([{ name: 'logoFile' }, { name: 'imagens', maxCount: 20 }]), EmpresaController.update);
 router.delete('/empresa/:id', AuthController.private, EmpresaController.delete);
+router.delete('/empresa/imagemempresa/:id', AuthController.private, EmpresaController.deleteImagensEmpresa);
 
 router.get('/noticia', NoticiaController.listar);
 router.get('/noticia/:id', NoticiaController.show);
