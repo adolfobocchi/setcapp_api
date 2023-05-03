@@ -1,12 +1,12 @@
 const Evento = require('../models/Eventos');
-
+const fs = require('fs');
 const ImagemEvento = require('../models/EventosImages');
 
 async function adicionarImagensAoEvento(eventoId, imagens) {
   try {
     const imagensDoEvento = await Promise.all(
       imagens.map(async (imagem) => {
-        const imagemDoEvento = await ImagemEvento.create({ url: imagem.filename, EventoId: eventoId });
+        const imagemDoEvento = await ImagemEvento.create({ url: imagem.filename, eventoId: eventoId });
         return imagemDoEvento;
       })
     );
@@ -15,6 +15,17 @@ async function adicionarImagensAoEvento(eventoId, imagens) {
   } catch (error) {
     return { sucesso: false, mensagem: error.message };
   }
+}
+function deleteImage(imageName) {
+  let imagePath = `${process.env.PATH_WWW}/public/images/${imageName}`;
+  fs.unlink(imagePath, (err) => {
+    if (err) {
+      console.error(err);
+      return false;
+    }
+    console.log('Arquivo excluído com sucesso');
+    return true;
+  });
 }
 
 
@@ -69,18 +80,31 @@ const EventoController = {
   async update(req, res) {
     const { titulo, descricao, data, hora, local, ativo } = JSON.parse(req.body.evento);
     try {
-      const evento = await Evento.findByPk(req.params.id);
+      const evento = await Evento.findByPk(req.params.id, {
+        include: [{
+          model: ImagemEvento,
+          as: 'imagens'
+        }]
+      });
       if (!evento) {
         return res.status(404).json({ error: 'Evento não encontrado' });
-      } 
-      evento.titulo = titulo;
-      evento.descricao = descricao;
-      evento.data = data;
-      evento.hora = hora;
-      evento.local = local;
-      evento.ativo = ativo;
-      await evento.save();
-      return res.json(evento);
+      }
+      await evento.update({
+        titulo,
+        descricao,
+        data,
+        hora,
+        local,
+        ativo
+      });
+      adicionarImagensAoEvento(evento.id, req.files.imagens);
+      const eventoUpdate = await Evento.findByPk(req.params.id, {
+        include: [{
+          model: ImagemEvento,
+          as: 'imagens'
+        }]
+      });
+      return res.status(201).json(eventoUpdate);
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Erro ao atualizar evento' });
@@ -93,6 +117,14 @@ const EventoController = {
       if (!evento) {
         return res.status(404).json({ error: 'Evento não encontrado' });
       }
+      const ImagensEvento = await ImagemEvento.findAll({ where: { eventoId: evento.id } })
+      ImagensEvento.forEach(async (imagemEvento) => {
+        deleteImage(imagemEvento.url)
+        await ImagemEvento.destroy({
+          where: { id: imagemEvento.id }
+        });
+      }
+      );
       await evento.destroy();
       return res.json({ message: 'Evento removido com sucesso' });
     } catch (error) {
@@ -100,6 +132,24 @@ const EventoController = {
       return res.status(500).json({ error: 'Erro ao remover evento' });
     }
   },
+
+  async deleteImagensEvento(req, res) {
+    try {
+      const { id } = req.params;
+      const eventoImages = await ImagemEvento.findByPk(id);
+      if (!eventoImages) {
+        return res.status(404).json({ error: 'Evento não encontrada' });
+      }
+
+      deleteImage(eventoImages.url)
+
+      await eventoImages.destroy();
+      return res.status(204).send();
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Erro ao deletar evento' });
+    }
+  }
 };
 
 module.exports = EventoController;

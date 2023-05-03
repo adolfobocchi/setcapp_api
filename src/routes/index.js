@@ -95,8 +95,9 @@ router.delete('/associado/:id', AuthController.private, AssociadoController.dele
 router.get('/evento', EventoController.listar);
 router.get('/evento/:id', EventoController.show);
 router.post('/evento', AuthController.private, upload.fields([{ name: 'imagens', maxCount: 10 }]), EventoController.criar);
-router.put('/evento/:id', AuthController.private, upload.array('files'), EventoController.update);
-router.delete('/evento/:id', AuthController.private, upload.array('files'), EventoController.delete);
+router.put('/evento/:id', AuthController.private, upload.fields([{ name: 'imagens', maxCount: 10 }]), EventoController.update);
+router.delete('/evento/:id', AuthController.private, EventoController.delete);
+router.delete('/evento/imagemevento/:id', AuthController.private, EventoController.deleteImagensEvento);
 
 router.get('/antt', AnttController.listar);
 router.get('/antt/:id', AnttController.show);

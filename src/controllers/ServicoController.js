@@ -1,4 +1,17 @@
 const Servico = require('../models/Servicos');
+const fs = require('fs');
+
+function deleteImage(imageName) {
+  let imagePath = `${process.env.PATH_WWW}/public/images/${imageName}`;
+  fs.unlink(imagePath, (err) => {
+    if (err) {
+      console.error(err);
+      return false;
+    }
+    console.log('Arquivo excluído com sucesso');
+    return true;
+  });
+}
 
 const ServicoController = {
   async listar(req, res) {
@@ -70,12 +83,15 @@ const ServicoController = {
 
   async delete(req, res) {
     try {
-      const servico = await Servico.findOne({ where: { id: req.params.id } });
+      const { id } = req.params; 
+      const servico = await Servico.findOne({ where: { id: id} });
       if (!servico) {
         return res.status(404).json({ message: "Serviço não encontrado" });
       }
+      const url = servico.url;
       await servico.destroy();
-      res.status(204).end();
+      deleteImage(url);
+      res.status(204).json({ message: 'SliderItem excluído com sucesso' });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Erro ao deletar o serviço" });

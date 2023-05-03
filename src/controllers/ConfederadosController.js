@@ -1,4 +1,19 @@
 const Confederados = require('../models/Confederados');
+const fs = require('fs');
+
+
+function deleteImage(imageName) {
+  let imagePath = `${process.env.PATH_WWW}/public/images/${imageName}`;
+  fs.unlink(imagePath, (err) => {
+    if (err) {
+      console.error(err);
+      return false;
+    }
+    console.log('Arquivo excluído com sucesso');
+    return true;
+  });
+}
+
 
 const ConfederadosController = {
   async listar(req, res) {
@@ -15,7 +30,7 @@ const ConfederadosController = {
     try {
       const confederado = await Confederados.findOne({ where: { id: req.params.id } });
       if (!confederado) {
-        return res.status(404).json({ message: "Serviço não encontrado" });
+        return res.status(404).json({ message: "regsitro não encontrado" });
       }
       res.status(200).json(confederado);
     } catch (error) {
@@ -48,7 +63,7 @@ const ConfederadosController = {
     try {
       const confederado = await Confederados.findOne({ where: { id: req.params.id } });
       if (!confederado) {
-        return res.status(404).json({ message: "Serviço não encontrado" });
+        return res.status(404).json({ message: "regsitro não encontrado" });
       }
       const { nome,  ativo, link } = JSON.parse(req.body.confederado);
       if (req.files && Object.keys(req.files).length > 0) {
@@ -70,15 +85,18 @@ const ConfederadosController = {
 
   async delete(req, res) {
     try {
-      const confederado = await Confederados.findOne({ where: { id: req.params.id } });
+      const { id } = req.params;
+      const confederado = await Confederados.findByPk(id);
       if (!confederado) {
-        return res.status(404).json({ message: "Serviço não encontrado" });
+        return res.status(404).json({ message: "regsitro não encontrado" });
       }
+      const url = confederado.url;
       await confederado.destroy();
-      res.status(204).end();
+      deleteImage(url);
+      res.status(204).json({message: 'excluído com sucesso'});
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Erro ao deletar o serviço" });
+      res.status(500).json({ message: "Erro ao deletar" });
     }
   },
 };

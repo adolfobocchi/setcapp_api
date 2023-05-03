@@ -172,7 +172,6 @@ const EmpresaController = {
     async deleteImagensEmpresa(req, res) {
         try {
             const { id } = req.params;
-            console.log(id);
             const empresaImages = await EmpresaImages.findByPk(id);
             if (!empresaImages) {
                 return res.status(404).json({ error: 'Empresa não encontrada' });
