@@ -3,12 +3,24 @@ const Noticia = require('../models/Noticias');
 const NoticiaController = {
 async listar (req, res) {
   try {
-    const noticias = await Noticia.findAll({ 
-      where: { ativo: true },
-      order: [['data_hora', 'desc']],
-      limit: 10
-      
-    });
+    const {page, ativo} = req.params;
+    let noticias = null;
+    if (ativo == 1 ) {
+      noticias = await Noticia.findAll({ 
+        where: { ativo: true},
+        order: [['data_hora', 'desc']],
+        limit: page * 10,
+        offset: (page-1) * 10 
+        
+      });
+    } else {
+      noticias = await Noticia.findAll({
+        order: [['data_hora', 'desc']],
+        limit: page * 10,
+        offset: (page-1) * 10 
+        
+      });
+    }
     res.status(200).json(noticias);
   } catch (error) {
     res.status(500).json({ message: error.message });

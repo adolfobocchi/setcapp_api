@@ -1,4 +1,17 @@
 const Antts = require('../models/Antt');
+const fs = require('fs');
+
+function deleteImage(imageName) {
+  let imagePath = `${process.env.PATH_WWW}/public/images/${imageName}`;
+  fs.unlink(imagePath, (err) => {
+    if (err) {
+      console.error(err);
+      return false;
+    }
+    console.log('Arquivo excluído com sucesso');
+    return true;
+  });
+}
 
 const AnttController = {
   async listar(req, res) {
@@ -68,7 +81,9 @@ const AnttController = {
       if (!antt) {
         return res.status(404).json({ message: "Serviço não encontrado" });
       }
+      const url = antt.url;
       await antt.destroy();
+      deleteImage(url);
       res.status(204).end();
     } catch (error) {
       console.log(error);

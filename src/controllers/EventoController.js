@@ -31,13 +31,34 @@ function deleteImage(imageName) {
 
 const EventoController = {
   async listar(req, res) {
+    
     try {
-      const eventos = await Evento.findAll({
-        include: [{
-          model: ImagemEvento,
-          as: 'imagens'
-        }]
-      });
+      const {page, ativo} = req.params;
+      let eventos = null;
+      if (ativo == 1 ) {
+        eventos = await Evento.findAll({
+          include: [{
+            model: ImagemEvento,
+            as: 'imagens'
+          }], 
+          where: { ativo: true},
+          order: [['data', 'desc']],
+          limit: page * 10,
+          offset: (page-1) * 10 
+          
+        });
+      } else {
+        eventos = await Evento.findAll({
+          include: [{
+            model: ImagemEvento,
+            as: 'imagens'
+          }],
+          order: [['data', 'desc']],
+          limit: page * 10,
+          offset: (page-1) * 10 
+          
+        });
+      }
       return res.json(eventos);
     } catch (error) {
       console.error(error);
@@ -47,7 +68,11 @@ const EventoController = {
 
   async show(req, res) {
     try {
-      const evento = await Evento.findByPk(req.params.id);
+      const evento = await Evento.findByPk(req.params.id, {
+        include: [{
+          model: ImagemEvento,
+          as: 'imagens'
+        }],});
       if (!evento) {
         return res.status(404).json({ error: 'Evento não encontrado' });
       }
@@ -70,7 +95,12 @@ const EventoController = {
         ativo
       });
       adicionarImagensAoEvento(evento.id, req.files.imagens);
-      return res.status(201).json(evento);
+      const eventoRetorno = await Evento.findByPk(evento.id, {
+        include: [{
+          model: ImagemEvento,
+          as: 'imagens'
+        }],});
+      return res.status(201).json(eventoRetorno);
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Erro ao criar evento' });

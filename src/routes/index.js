@@ -43,7 +43,7 @@ router.put('/empresa/:id', AuthController.private, upload.fields([{ name: 'logoF
 router.delete('/empresa/:id', AuthController.private, EmpresaController.delete);
 router.delete('/empresa/imagemempresa/:id', AuthController.private, EmpresaController.deleteImagensEmpresa);
 
-router.get('/noticia', NoticiaController.listar);
+router.get('/noticia/page/:page/:ativo', NoticiaController.listar);
 router.get('/noticia/:id', NoticiaController.show);
 router.post('/noticia', AuthController.private, NoticiaController.criar);
 router.put('/noticia/:id', AuthController.private, NoticiaController.update);
@@ -92,7 +92,7 @@ router.post('/associado', AssociadoController.criar);
 router.put('/associado/:id', AuthController.private, AssociadoController.update);
 router.delete('/associado/:id', AuthController.private, AssociadoController.delete);
 
-router.get('/evento', EventoController.listar);
+router.get('/evento/page/:page/:ativo', EventoController.listar);
 router.get('/evento/:id', EventoController.show);
 router.post('/evento', AuthController.private, upload.fields([{ name: 'imagens', maxCount: 10 }]), EventoController.criar);
 router.put('/evento/:id', AuthController.private, upload.fields([{ name: 'imagens', maxCount: 10 }]), EventoController.update);
