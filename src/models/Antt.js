@@ -2,13 +2,13 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../database/connection');
 
 const Antt = sequelize.define('antt', {
-  nome: {
-    type: DataTypes.STRING,
-    allowNull: true
-  },
   url: {
     type: DataTypes.STRING,
     allowNull: true
+  },
+  conteudo : {
+    type: DataTypes.TEXT('long'),
+    allowNull: false
   },
 });
 

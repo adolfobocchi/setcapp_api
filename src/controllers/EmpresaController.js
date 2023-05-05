@@ -146,8 +146,15 @@ const EmpresaController = {
                 diretoria,
                 territorio
             });
-            adicionarImagensAoEmpresa(empresa.id, req.files.imagens)
-            return res.json(empresa);
+            adicionarImagensAoEmpresa(empresa.id, req.files.imagens);
+            const empresaUpdate = await Empresa.findAll({
+                where: {id: id},
+                include: [{
+                    model: EmpresaImages,
+                    as: 'imagens'
+                }]
+            });
+            return res.json(empresaUpdate);
         } catch (err) {
             console.error(err);
             return res.status(500).json({ error: 'Erro ao atualizar empresa' });

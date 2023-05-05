@@ -39,12 +39,12 @@ const AnttController = {
 
   async criar(req, res) {
     try {
-      const { nome } = JSON.parse(req.body.antt);
+      const { conteudo } = JSON.parse(req.body.antt);
       if (req.files && Object.keys(req.files).length > 0) {
         var url = req.files.anttFile[0].filename;
       }
       const novoAntt = await Antts.create({
-        nome,
+        conteudo,
         url
       });
       res.status(201).json(novoAntt);
@@ -60,12 +60,12 @@ const AnttController = {
       if (!antt) {
         return res.status(404).json({ message: "Serviço não encontrado" });
       }
-      const { nome } = JSON.parse(req.body.antt);
+      const { conteudo } = JSON.parse(req.body.antt);
       if (req.files && Object.keys(req.files).length > 0) {
         var url = req.files.anttFile[0].filename;
       }
       const anttAtualizado = await antt.update({
-        nome,
+        conteudo,
         url
       });
       res.status(200).json(anttAtualizado);
