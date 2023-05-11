@@ -14,6 +14,7 @@ const EventoController = require('../controllers/EventoController');
 const ConfederadoController = require('../controllers/ConfederadosController');
 const AcordoController = require('../controllers/AcordoController');
 const ContatoController = require('../controllers/ContatoController');
+const CurriculoController = require('../controllers/CurriculoController');
 const AnttController = require('../controllers/AnttController');
 
 const storage = multer.diskStorage({
@@ -78,6 +79,14 @@ router.get('/contato/:id', AuthController.private, ContatoController.show);
 router.post('/contato',  ContatoController.criar);
 router.put('/contato/:id', AuthController.private, ContatoController.update);
 router.delete('/contato/:id', AuthController.private, ContatoController.delete);
+
+
+router.get('/curriculo', AuthController.private, CurriculoController.listar);
+router.get('/curriculo/:id', AuthController.private, CurriculoController.show);
+router.post('/curriculo', upload.fields([{name: 'curriculoFile'}]), CurriculoController.criar);
+router.put('/curriculo/:id', upload.fields([{name: 'curriculoFile'}]), AuthController.private, CurriculoController.update);
+router.delete('/curriculo/:id', AuthController.private, CurriculoController.delete);
+
 
 
 router.get('/legislacao', LegislacaoController.listar);
