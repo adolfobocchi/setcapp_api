@@ -75,7 +75,7 @@ router.post('/acordo', AuthController.private, upload.fields([{name: 'acordoFile
 router.put('/acordo/:id', AuthController.private, upload.fields([{name: 'acordoFile'}]), AcordoController.update);
 router.delete('/acordo/:id', AuthController.private, AcordoController.delete);
 
-router.get('/contato', AuthController.private, ContatoController.listar);
+router.get('/contato', AuthController.private, ContatoController.listarPage);
 router.get('/contato/:id', AuthController.private, ContatoController.show);
 router.post('/contato',  ContatoController.criar);
 router.put('/contato/:id', AuthController.private, ContatoController.update);

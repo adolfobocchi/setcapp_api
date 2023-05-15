@@ -11,6 +11,31 @@ const ContatosController = {
     }
   },
 
+  async listarPage(req, res) {
+    try {
+        const { page, ativo } = req.params;
+        let contatos = null;
+        if (ativo == 1) {
+            contatos = await Contatos.findAll({
+                order: [['createdAt', 'desc']],
+                limit: page * 10,
+                offset: (page - 1) * 10
+
+            });
+        } else {
+            contatos = await Contatos.findAll({
+                order: [['razaoSocial', 'desc']],
+                limit: page * 10,
+                offset: (page - 1) * 10
+
+            });
+        }
+        res.status(200).json(contatos);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+},
+
   async show(req, res) {
     try {
       const contato = await Contatos.findOne({ where: { id: req.params.id } });
