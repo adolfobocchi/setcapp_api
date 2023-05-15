@@ -80,6 +80,10 @@ const Empresa = sequelize.define('empresa', {
     type: DataTypes.TEXT('long'),
     allowNull: true
   },
+  associadoPage:{
+    type: DataTypes.TEXT('long'),
+    allowNull: true
+  },
 });
 
 Empresa.hasMany(EmpresaImages, {as: 'imagens', onDelete: 'CASCADE'});

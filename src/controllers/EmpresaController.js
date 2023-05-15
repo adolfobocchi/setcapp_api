@@ -43,7 +43,7 @@ const EmpresaController = {
                 cidade,
                 estado,
                 cep,
-                telefone, whatsapp, instagram, facebook, linkedin, email, latitude, longitude, institucional, diretoria, territorio } = JSON.parse(req.body.empresa);
+                telefone, whatsapp, instagram, facebook, linkedin, email, latitude, longitude, institucional, diretoria, territorio, associadoPage } = JSON.parse(req.body.empresa);
 
             if (req.files && Object.keys(req.files).length > 0) {
                 var logo = req.files.logoFile[0].filename;
@@ -67,7 +67,8 @@ const EmpresaController = {
                 longitude,
                 institucional,
                 diretoria,
-                territorio
+                territorio,
+                associadoPage
             });
             adicionarImagensAoEmpresa(empresa.id, req.files.imagens)
             return res.status(201).json(empresa);
@@ -116,7 +117,7 @@ const EmpresaController = {
                 cidade,
                 estado,
                 cep,
-                telefone, whatsapp, instagram, facebook, linkedin, email, latitude, longitude, institucional, diretoria, territorio } = JSON.parse(req.body.empresa);
+                telefone, whatsapp, instagram, facebook, linkedin, email, latitude, longitude, institucional, diretoria, territorio, associadoPage } = JSON.parse(req.body.empresa);
 
             const empresa = await Empresa.findByPk(id);
             if (!empresa) {
@@ -144,7 +145,8 @@ const EmpresaController = {
                 longitude,
                 institucional,
                 diretoria,
-                territorio
+                territorio,
+                associadoPage
             });
             adicionarImagensAoEmpresa(empresa.id, req.files.imagens);
             const empresaUpdate = await Empresa.findAll({

@@ -7,7 +7,7 @@ const ContatosController = {
       res.status(200).json(contatos);
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Erro ao buscar os serviços" });
+      res.status(500).json({ message: "Erro ao buscar os contatos" });
     }
   },
 
@@ -15,12 +15,12 @@ const ContatosController = {
     try {
       const contato = await Contatos.findOne({ where: { id: req.params.id } });
       if (!contato) {
-        return res.status(404).json({ message: "Serviço não encontrado" });
+        return res.status(404).json({ message: "Contato não encontrado" });
       }
       res.status(200).json(contato);
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Erro ao buscar o serviço" });
+      res.status(500).json({ message: "Erro ao buscar o contato" });
     }
   },
 
@@ -33,7 +33,7 @@ const ContatosController = {
       res.status(201).json(novoContatos);
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Erro ao criar o serviço" });
+      res.status(500).json({ message: "Erro ao criar o contato" });
     }
   },
 
@@ -41,7 +41,7 @@ const ContatosController = {
     try {
       const contato = await Contatos.findOne({ where: { id: req.params.id } });
       if (!contato) {
-        return res.status(404).json({ message: "Serviço não encontrado" });
+        return res.status(404).json({ message: "Contato não encontrado" });
       }
       const { nome, email, assunto, telefone, mensagem } = req.body;
       const contatoAtualizado = await contato.update({
@@ -50,7 +50,7 @@ const ContatosController = {
       res.status(200).json(contatoAtualizado);
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Erro ao atualizar o serviço" });
+      res.status(500).json({ message: "Erro ao atualizar o contato" });
     }
   },
 
@@ -58,13 +58,13 @@ const ContatosController = {
     try {
       const contato = await Contatos.findOne({ where: { id: req.params.id } });
       if (!contato) {
-        return res.status(404).json({ message: "Serviço não encontrado" });
+        return res.status(404).json({ message: "Contato não encontrado" });
       }
       await contato.destroy();
       res.status(204).end();
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Erro ao deletar o serviço" });
+      res.status(500).json({ message: "Erro ao deletar o contato" });
     }
   },
 };

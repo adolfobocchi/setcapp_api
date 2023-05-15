@@ -16,6 +16,7 @@ const AcordoController = require('../controllers/AcordoController');
 const ContatoController = require('../controllers/ContatoController');
 const CurriculoController = require('../controllers/CurriculoController');
 const AnttController = require('../controllers/AnttController');
+const SindicalController = require('../controllers/SindicalController');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -95,7 +96,7 @@ router.post('/legislacao', AuthController.private, LegislacaoController.criar);
 router.put('/legislacao/:id', AuthController.private, LegislacaoController.update);
 router.delete('/legislacao/:id', AuthController.private, LegislacaoController.delete);
 
-router.get('/associado', AuthController.private, AssociadoController.listar);
+router.get('/associado/page/:page/:ativo', AuthController.private, AssociadoController.listarPage);
 router.get('/associado/:id', AuthController.private, AssociadoController.show);
 router.post('/associado', AssociadoController.criar);
 router.put('/associado/:id', AuthController.private, AssociadoController.update);
@@ -113,5 +114,12 @@ router.get('/antt/:id', AnttController.show);
 router.post('/antt', AuthController.private, upload.fields([{name: 'anttFile'}]), AnttController.criar);
 router.put('/antt/:id', AuthController.private, upload.fields([{name: 'anttFile'}]), AnttController.update);
 router.delete('/antt/:id', AuthController.private, AnttController.delete);
+
+router.get('/sindical', SindicalController.listar);
+router.get('/sindical/:id', SindicalController.show);
+router.post('/sindical', AuthController.private, upload.fields([{name: 'sindicalFile'}]), SindicalController.criar);
+router.put('/sindical/:id', AuthController.private, upload.fields([{name: 'sindicalFile'}]), SindicalController.update);
+router.delete('/sindical/:id', AuthController.private, SindicalController.delete);
+
 
 module.exports = router;

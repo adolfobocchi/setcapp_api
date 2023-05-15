@@ -10,11 +10,6 @@ const Associado = sequelize.define('associados', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  cnpj: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
-  },
   endereco: {
     type: DataTypes.STRING,
     allowNull: false
@@ -27,6 +22,10 @@ const Associado = sequelize.define('associados', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  bairro: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   cep: {
     type: DataTypes.STRING,
     allowNull: false
@@ -35,11 +34,24 @@ const Associado = sequelize.define('associados', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  celular: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   email: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  responsavel: {
+  cnpj: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  ie: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  juntacomercial: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -47,11 +59,19 @@ const Associado = sequelize.define('associados', {
     type: DataTypes.DATEONLY,
     allowNull: false
   },
-  ie: {
-    type: DataTypes.STRING,
+  matriz: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  veiculos: {
+    type: DataTypes.INTEGER,
     allowNull: false
   },
-  im: {
+  funcionarios: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  responsavel: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -59,39 +79,15 @@ const Associado = sequelize.define('associados', {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
-  mudanca: {
+  cargaliquidagranel: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
-  bebidas: {
+  cargasolidagranel: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
-  containers: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
-  },
-  explosivos: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
-  },
-  gases: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
-  },
-  encomendas: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
-  },
-  cargagranelsolida: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
-  },
-  cargagranelliquida: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
-  },
-  cargaviva: {
+  cargaindivisiveis: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
@@ -99,31 +95,43 @@ const Associado = sequelize.define('associados', {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
-  solidosInflamaveis: {
+  cargasiderurgica: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
-  substanciasToxicas: {
+  cargamadeiras: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
-  veiculosAutomotores: {
+  cargaviva: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
-  frigorificas: {
+  cargaperecivel: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
-  valores: {
+  cargalixo: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
-  corrosiva: {
+  cargavalores: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
-  diversas: {
+  cargaconcreto: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  cargaveiculos: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  cargacontainer: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  cargaoutros: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   }
