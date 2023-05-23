@@ -4,25 +4,30 @@ const Empresa = require('../models/Empresa');
 
 const EmpresaImages = require('../models/EmpresaImages');
 
-async function adicionarImagensAoEmpresa(empresaId, imagens) {
+async function adicionarImagensAoEmpresa(id, empresaId, legenda, imagens) {
     try {
-        const imagensDoEmpresa = await Promise.all(
+        await Promise.all(
             imagens.map(async (imagem) => {
-                const imagemDoEmpresa = await EmpresaImages.create({ url: imagem.filename, empresaId: empresaId });
-                return imagemDoEmpresa;
+                if(id === 0) {
+                    const imagemDoEmpresa = await EmpresaImages.create({ url: imagem.filename, legenda: legenda, empresaId: empresaId });
+                    return imagemDoEmpresa;
+                } else {
+                    const empresaImagem = await EmpresaImages.findByPk(id);
+                    await empresaImagem.update({ url: imagem.filename, legenda: legenda, empresaId: empresaId })
+                    return empresaImagem;
+                }
             })
         );
 
         return { sucesso: true };
     } catch (error) {
+        console.log(error);
         return { sucesso: false, mensagem: error.message };
     }
 }
 
 function deleteImage(imageName) {
-    console.log(imageName);
     let imagePath = `${process.env.PATH_WWW}/public/images/${imageName}`;
-    console.log(imagePath);
     fs.unlink(imagePath, (err) => {
       if (err) {
         console.error(err);
@@ -31,7 +36,7 @@ function deleteImage(imageName) {
       console.log('Arquivo excluído com sucesso');
       return true;
     });
-  }
+}
 
 const EmpresaController = {
     async criar(req, res) {
@@ -70,7 +75,7 @@ const EmpresaController = {
                 territorio,
                 associadoPage
             });
-            adicionarImagensAoEmpresa(empresa.id, req.files.imagens)
+            //adicionarImagensAoEmpresa(empresa.id, legenda || '', req.files.territorioFile)
             return res.status(201).json(empresa);
         } catch (err) {
             console.error(err);
@@ -118,7 +123,7 @@ const EmpresaController = {
                 estado,
                 cep,
                 telefone, whatsapp, instagram, facebook, linkedin, email, latitude, longitude, institucional, diretoria, territorio, associadoPage } = JSON.parse(req.body.empresa);
-
+            
             const empresa = await Empresa.findByPk(id);
             if (!empresa) {
                 return res.status(404).json({ error: 'Empresa não encontrada' });
@@ -148,7 +153,7 @@ const EmpresaController = {
                 territorio,
                 associadoPage
             });
-            adicionarImagensAoEmpresa(empresa.id, req.files.imagens);
+            //adicionarImagensAoEmpresa(empresa.id, imagemEstruturaSelected,req.files.territorioFile);
             const empresaUpdate = await Empresa.findAll({
                 where: {id: id},
                 include: [{
@@ -194,6 +199,36 @@ const EmpresaController = {
             console.error(err);
             return res.status(500).json({ error: 'Erro ao deletar empresa' });
         }
-    }
+    },
+
+    async gravarImagemEmpresa(req, res) {
+        try {
+            const { empresaId } = req.params;
+            let { id, legenda, url } = JSON.parse(req.body.imagemEmpresa);
+            //const result = await adicionarImagensAoEmpresa(id, empresaId, legenda || '', req.files.territorioFile);
+            if (req.files && Object.keys(req.files).length > 0) {
+                url = req.files.territorioFile[0].filename;
+            }
+            if(id === 0) {
+                await EmpresaImages.create({ url: url, legenda: legenda, empresaId: empresaId });
+                
+            } else {
+                const empresaImagem = await EmpresaImages.findByPk(id);
+                await empresaImagem.update({ url: url, legenda: legenda, empresaId: empresaId })
+                
+            }
+            const empresaUpdate = await Empresa.findAll({
+                where: {id: empresaId},
+                include: [{
+                    model: EmpresaImages,
+                    as: 'imagens'
+                }]
+            });
+            return res.status(201).json(empresaUpdate);
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Erro ao criar empresa' });
+        }
+    },
 };
 module.exports = EmpresaController;

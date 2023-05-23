@@ -17,6 +17,7 @@ const ContatoController = require('../controllers/ContatoController');
 const CurriculoController = require('../controllers/CurriculoController');
 const AnttController = require('../controllers/AnttController');
 const SindicalController = require('../controllers/SindicalController');
+const SearchController = require('../controllers/SearchController');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -39,9 +40,10 @@ router.post('/logout', AuthController.logout);
 router.post('/token', AuthController.isTokenValid);
 
 router.get('/empresa', EmpresaController.listar);
-router.post('/empresa', AuthController.private, upload.fields([{ name: 'logoFile' }, { name: 'imagens', maxCount: 20 }]), EmpresaController.criar);
+router.post('/empresa', AuthController.private, upload.fields([{ name: 'logoFile' }]), EmpresaController.criar);
+router.post('/empresa/:empresaId/imagem', AuthController.private, upload.fields([{ name: 'territorioFile' }]), EmpresaController.gravarImagemEmpresa);
 router.get('/empresa/:id', EmpresaController.show);
-router.put('/empresa/:id', AuthController.private, upload.fields([{ name: 'logoFile' }, { name: 'imagens', maxCount: 20 }]), EmpresaController.update);
+router.put('/empresa/:id', AuthController.private, upload.fields([{ name: 'logoFile' }]), EmpresaController.update);
 router.delete('/empresa/:id', AuthController.private, EmpresaController.delete);
 router.delete('/empresa/imagemempresa/:id', AuthController.private, EmpresaController.deleteImagensEmpresa);
 
@@ -121,5 +123,6 @@ router.post('/sindical', AuthController.private, upload.fields([{name: 'sindical
 router.put('/sindical/:id', AuthController.private, upload.fields([{name: 'sindicalFile'}]), SindicalController.update);
 router.delete('/sindical/:id', AuthController.private, SindicalController.delete);
 
+router.get('/search', SearchController.listar);
 
 module.exports = router;

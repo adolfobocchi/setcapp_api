@@ -10,6 +10,10 @@ const EmpresaImages = sequelize.define('empresa_imagens', {
   url: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  legenda: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 });
 
