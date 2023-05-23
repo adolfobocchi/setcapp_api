@@ -1,3 +1,5 @@
+const fs = require('fs');
+const https = require('https');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -33,9 +35,13 @@ server.use((req,res) => {
     res.send('Pagina nao encontrada');
 });
 
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/setcapp.com.br/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/setcapp.com.br/fullchain.pem', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
 
-server.listen(process.env.PORT, () => {
-  console.log(`Server listening at http://localhost:${process.env.PORT}`);
+const httpsServer = https.createServer(credentials, server);
+httpsServer.listen(process.env.PORT, () => {
+  console.log(`Server listening at https://localhost:${process.env.PORT}`);
 });
 
 
